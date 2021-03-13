@@ -9,10 +9,10 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVoidDelegate);
 
 /*
-* The rotation mode for an axes (ignored when TargetRelative is false):
-*	-STARTING: look along the direction of the axes that the target had when assigned to this component
-*	-CURRENT: look along the target's current axes direction
-*	-WORLD: ignore the target axes direction (uses (1,0,0), (0,1,0), (0,0,1) vectors for the axes
+* The axis along which the offset coordinate is calculated:
+*	-STARTING: the axis that the target had when assigned to this component
+*	-CURRENT:  the target's current axis direction
+*	-WORLD:	   a default (world relative) axis
 */
 UENUM(BlueprintType)
 enum class EOffsetAxisSpace : uint8 {
@@ -47,12 +47,13 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	//Delegate that fires when the camera has reached the player
+	//Delegate that fires when the attached actor has reached the player
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 		FVoidDelegate OnSnap;
-	//Delegate that fires when the camera has reached the player, then removes all bound functions
+	//Delegate that fires when the attached actor has reached the player, then removes all bound functions
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 		FVoidDelegate OnSnapSingle;
+	//Delegate that fires when a new target is set
 	UPROPERTY(BlueprintAssignable, Category = "Delegates")
 		FVoidDelegate OnSetTarget;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "FollowBehaviour")
